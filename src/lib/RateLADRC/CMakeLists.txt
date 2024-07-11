@@ -31,18 +31,11 @@
 #
 ############################################################################
 
-px4_add_module(
-	MODULE modules__mc_rate_control
-	MAIN mc_rate_control
-	COMPILE_FLAGS
-		${MAX_CUSTOM_OPT_LEVEL}
-	SRCS
-		MulticopterRateControl.cpp
-		MulticopterRateControl.hpp
-	DEPENDS
-		circuit_breaker
-		mathlib
-		RateControl
-		px4_work_queue
-		RateLADRC
-	)
+px4_add_library(RateLADRC
+	RateLADRC.cpp
+	RateLADRC.hpp
+	LADRC.hpp
+)
+target_compile_options(RateLADRC PRIVATE ${MAX_CUSTOM_OPT_LEVEL})
+target_include_directories(RateLADRC PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(RateLADRC PRIVATE mathlib)

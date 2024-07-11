@@ -292,3 +292,311 @@ PARAM_DEFINE_FLOAT(MC_YAWRATE_K, 1.0f);
  * @group Multicopter Rate Control
  */
 PARAM_DEFINE_INT32(MC_BAT_SCALE_EN, 0);
+
+
+/**
+ * Rate control method
+ *
+ * @value 0 PID(default)
+ * @value 1 LADRC
+ * @group Multicopter Rate Control
+ */
+PARAM_DEFINE_INT32(MC_RATE_METHOD, 1);
+
+/**
+ * ADRC TD damping ratio for roll
+ * @min 0.1
+ * @max 10.0
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_TD_XI, 1.0f);
+
+/**
+ * ADRC TD frequency for roll
+ *
+ * @min 10.0
+ * @max 200.0
+ * @decimal 1
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_TD_FREQ, 90.0);
+
+/**
+ * ADRC state1 feedback gain for roll
+ *
+ * @min 0.0100
+ * @max 0.2000
+ * @decimal 4
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_ERR_K1, 0.08);
+
+/**
+ * ADRC state2 feedback gain for roll
+ *
+ * @min 0.0
+ * @max 0.1
+ * @decimal 4
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_ERR_K2, 0.002);
+
+
+/**
+ * ADRC disturb gain for roll
+ *
+ * @min 0.00000
+ * @max 100.00000
+ * @decimal 5
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_DGAIN, 0.001);
+
+
+/**
+ * ADRC disturb max amplitude for roll
+ *
+ * @min 0.0
+ * @max 0.5
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_DMAX, 0.1);
+
+/**
+ * ADRC output max amplitude for roll
+ *
+ * @min 0.0
+ * @max 1.0
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_UMAX, 0.5);
+
+/**
+ * ADRC ESO gain for roll
+ *
+ * @min 1
+ * @max 1e6
+ * @decimal 1
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 1000);
+
+/**
+ * ADRC ESO bandwidth for roll
+ *
+ * @unit rad/s
+ * @min 1
+ * @max 200
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 80);
+
+
+
+
+
+/**
+ * ADRC TD damping ratio for pitch
+ *
+ * @min 0.1
+ * @max 10.0
+ * @decimal 1
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_TD_XI, 1.0);
+
+/**
+ * ADRC TD frequency for pitch
+ *
+ * @min 10.0
+ * @max 200.0
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_TD_FREQ, 90.0);
+
+/**
+ * ADRC state1 feedback gain for pitch
+ *
+ * @min 0.01
+ * @max 0.2
+ * @decimal 4
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_ERR_K1, 0.08);
+
+/**
+ * ADRC state2 feedback gain for pitch
+ *
+ * @min 0.0
+ * @max 0.1
+ * @decimal 4
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_ERR_K2, 0.002);
+
+/**
+ * ADRC disturb max amplitude for pitch
+ *
+ * @min 0.0
+ * @max 0.5
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_DMAX, 0.1);
+
+
+
+
+
+/**
+ * ADRC disturb gain for pitch
+ *
+ * @min 0.0
+ * @max 100.0
+ * @decimal 5
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.002);
+
+
+/**
+ * ADRC output max amplitude for pitch
+ *
+ * @min 0.0
+ * @max 1.0
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_UMAX, 0.5);
+
+/**
+ * ADRC ESO gain for pitch
+ *
+ * @min 1
+ * @max 1e6
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 1000);
+
+/**
+ * ADRC ESO bandwidth for pitch
+ *
+ * @unit rad/s
+ * @min 1
+ * @max 200
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 80);
+
+
+
+
+
+
+
+/**
+ * ADRC TD damping ratio for yaw
+ *
+ * @min 1.0
+ * @max 10.0
+ * @decimal 1
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_TD_XI, 2.0);
+
+/**
+ * ADRC TD frequency for yaw
+ *
+ * @min 10.0
+ * @max 200.0
+ * @decimal 1
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_TD_FREQ, 20.0);
+
+/**
+ * ADRC state1 feedback gain for yaw
+ *
+ * @min 0.01
+ * @max 0.5
+ * @decimal 4
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_ERR_K1, 0.15);
+
+/**
+ * ADRC state2 feedback gain for yaw
+ *
+ * @min 0.0
+ * @max 0.1
+ * @decimal 4
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_ERR_K2, 0.00);
+
+/**
+ * ADRC disturb max amplitude for yaw
+ *
+ * @min 0.0
+ * @max 0.5
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_DMAX, 0.2);
+
+
+
+
+/**
+ * ADRC disturb gain for yaw
+ *
+ * @min 0.0
+ * @max 1.0
+ * @decimal 5
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_DGAIN, 0.05);
+
+
+
+
+/**
+ * ADRC output max amplitude for yaw
+ *
+ * @min 0.0
+ * @max 1.0
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_UMAX, 0.5);
+
+/**
+ * ADRC ESO gain for yaw
+ *
+ * @min 1
+ * @max 1e6
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_ESO_GAIN, 3e3);
+
+/**
+ * ADRC ESO bandwidth for yaw
+ *
+ * @unit rad/s
+ * @min 1
+ * @max 100
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_ESO_BW, 20);
+
+
+

@@ -61,7 +61,10 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_thrust_setpoint.h>
 #include <uORB/topics/vehicle_torque_setpoint.h>
+
+// ADRC topics
 #include <uORB/topics/ladrc_status.h>
+#include <uORB/topics/ladrc_control_dis.h>
 
 using namespace time_literals;
 
@@ -123,6 +126,8 @@ private:
 	uORB::Publication<ladrc_status_s>		_ratey_ladrc_status_pub{ORB_ID(ladrc_status_ratey)};
 	uORB::Publication<ladrc_status_s>		_ratez_ladrc_status_pub{ORB_ID(ladrc_status_ratez)};
 
+	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_pub{ORB_ID(ladrc_control_dis)};
+
 	vehicle_control_mode_s	_vehicle_control_mode{};
 	vehicle_status_s	_vehicle_status{};
 
@@ -170,7 +175,7 @@ private:
 		(ParamFloat<px4::params::MC_ACRO_P_MAX>) _param_mc_acro_p_max,
 		(ParamFloat<px4::params::MC_ACRO_Y_MAX>) _param_mc_acro_y_max,
 		(ParamFloat<px4::params::MC_ACRO_EXPO>) _param_mc_acro_expo,			/**< expo stick curve shape (roll & pitch) */
-		(ParamFloat<px4::params::MC_ACRO_EXPO_Y>) _param_mc_acro_expo_y,				/**< expo stick curve shape (yaw) */
+		(ParamFloat<px4::params::MC_ACRO_EXPO_Y>) _param_mc_acro_expo_y,		/**< expo stick curve shape (yaw) */
 		(ParamFloat<px4::params::MC_ACRO_SUPEXPO>) _param_mc_acro_supexpo,		/**< superexpo stick curve shape (roll & pitch) */
 		(ParamFloat<px4::params::MC_ACRO_SUPEXPOY>) _param_mc_acro_supexpoy,		/**< superexpo stick curve shape (yaw) */
 

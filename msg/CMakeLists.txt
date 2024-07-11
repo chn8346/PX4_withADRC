@@ -37,7 +37,11 @@ cmake_policy(SET CMP0057 NEW)
 include(px4_list_make_absolute)
 
 set(msg_files
+	# LADRC msg
 	ladrc_status.msg
+	ladrc_control_dis.msg
+
+	# other
 	ActionRequest.msg
 	ActuatorArmed.msg
 	ActuatorControlsStatus.msg

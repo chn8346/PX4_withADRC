@@ -240,9 +240,24 @@ MulticopterRateControl::Run()
 			if (_mc_rate_method == RATE_METHOD_LADRC) {
 				att_control = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
 			} else {
-				// _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
+				Vector3f att_control_adrc = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
 				att_control = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed);
-				         // = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed);
+
+				ladrc_control_dis_s dis_val;
+				dis_val.timestamp = hrt_absolute_time();
+
+				dis_val.pid_control_x = att_control(0);
+				dis_val.adrc_condrol_x = att_control_adrc(0);
+				dis_val.dis_of_control_x = att_control(0) - att_control_adrc(0);
+
+				dis_val.pid_control_y = att_control(1);
+				dis_val.adrc_condrol_y = att_control_adrc(1);
+				dis_val.dis_of_control_y = att_control(1) - att_control_adrc(1);
+
+				dis_val.pid_control_z = att_control(2);
+				dis_val.adrc_condrol_z = att_control_adrc(2);
+				dis_val.dis_of_control_z = att_control(2) - att_control_adrc(2);
+				_dis_ladrc_control_pub.publish(dis_val);
 			}
 
 			// pub ADRC controller status

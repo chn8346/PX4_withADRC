@@ -1400,6 +1400,9 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("ADSB_VEHICLE", unlimited_rate);
 		configure_stream_local("ALTITUDE", 1.0f);
 		configure_stream_local("ATTITUDE", 15.0f);
+		configure_stream_local("ADRC_STATUS_X", 20.0f);
+		configure_stream_local("ADRC_STATUS_Y", 20.0f);
+		configure_stream_local("ADRC_STATUS_Z", 20.0f);
 		configure_stream_local("ATTITUDE_QUATERNION", 10.0f);
 		configure_stream_local("ATTITUDE_TARGET", 2.0f);
 		configure_stream_local("AVAILABLE_MODES", 0.3f);
@@ -1473,6 +1476,10 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("MOUNT_ORIENTATION", 10.0f);
 		configure_stream_local("OBSTACLE_DISTANCE", 10.0f);
 		configure_stream_local("ODOMETRY", 30.0f);
+
+		configure_stream_local("ADRC_STATUS_X", 20.0f);
+		configure_stream_local("ADRC_STATUS_Y", 20.0f);
+		configure_stream_local("ADRC_STATUS_Z", 20.0f);
 
 		configure_stream_local("ADSB_VEHICLE", unlimited_rate);
 		configure_stream_local("ATTITUDE_QUATERNION", 50.0f);
@@ -1717,6 +1724,10 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("RC_CHANNELS", 0.5f);
 		configure_stream_local("SYS_STATUS", 0.1f);
 		configure_stream_local("VFR_HUD", 1.0f);
+
+		configure_stream_local("ADRC_STATUS_X", 20.0f);
+		configure_stream_local("ADRC_STATUS_Y", 20.0f);
+		configure_stream_local("ADRC_STATUS_Z", 20.0f);
 
 #if !defined(CONSTRAINED_FLASH)
 		configure_stream_local("LINK_NODE_STATUS", 1.0f);

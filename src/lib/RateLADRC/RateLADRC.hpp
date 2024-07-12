@@ -7,8 +7,10 @@
 #pragma once
 
 #include <LADRC.hpp>
-#include <matrix/matrix/math.hpp>
-
+#include <mathlib/math/Limits.hpp>
+#include <cmath>
+// #include <lib/mixer/MultirotorMixer/MultirotorMixer.hpp>
+#include <drivers/drv_hrt.h>
 #include <uORB/topics/ladrc_status.h>
 
 class RateLADRC

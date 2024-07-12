@@ -55,6 +55,11 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/vehicle_status.h>
+#include <uORB/topics/ladrc_status.h>
+
+#include "streams/ADRC_STATUS_X.hpp"
+#include "streams/ADRC_STATUS_Y.hpp"
+#include "streams/ADRC_STATUS_Z.hpp"
 
 #include "streams/ACTUATOR_OUTPUT_STATUS.hpp"
 #include "streams/ALTITUDE.hpp"
@@ -248,6 +253,15 @@ static_assert(MAV_SENSOR_ROTATION_CUSTOM == static_cast<MAV_SENSOR_ORIENTATION>(
 
 
 static const StreamListItem streams_list[] = {
+#if defined(ADRC_STATUS_X_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcStatusX>(),
+#endif
+#if defined(ADRC_STATUS_Y_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcStatusY>(),
+#endif
+#if defined(ADRC_STATUS_Z_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcStatusZ>(),
+#endif
 #if defined(HEARTBEAT_HPP)
 	create_stream_list_item<MavlinkStreamHeartbeat>(),
 #endif // HEARTBEAT_HPP

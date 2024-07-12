@@ -7,13 +7,9 @@
 #pragma once
 
 #include <matrix/matrix/math.hpp>
-
-
-static float constrain(float val, float val_max, float val_min){
-	if(val > val_max)val = val_max;
-	else if(val < val_min)val = val_min;
-	return val;
-}
+#include <mathlib/math/Limits.hpp>
+#include <drivers/drv_hrt.h>
+// #include <lib/mixer/MultirotorMixer/MultirotorMixer.hpp>
 
 
 class TrackingDifferentiator
@@ -96,7 +92,7 @@ public:
 		e2 = v2d - z2;
 		u0 = _beta1 * e1 + _beta2 * e2;
 		u = u0 + _disturb_gain * disturb;
-		u = constrain(u, _u_min, _u_max);
+		u = math::constrain(u, _u_min, _u_max);
 		return u;
 	}
 
@@ -177,7 +173,7 @@ public:
 		z3 += dt * (-_beta03 * ey);
 
 		distrub = -z3 / _b0;
-		distrub = constrain(distrub, _disturb_min, _disturb_max);
+		distrub = math::constrain(distrub, _disturb_min, _disturb_max);
 	}
 
 	float get_eso_reference(void)

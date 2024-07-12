@@ -301,7 +301,7 @@ PARAM_DEFINE_INT32(MC_BAT_SCALE_EN, 0);
  * @value 1 LADRC
  * @group Multicopter Rate Control
  */
-PARAM_DEFINE_INT32(MC_RATE_METHOD, 0);
+PARAM_DEFINE_INT32(MC_RATE_METHOD, 1);
 
 /**
  * ADRC TD damping ratio for roll
@@ -382,7 +382,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_UMAX, 0.5);
  * @decimal 1
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 1000);
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 500);
 
 /**
  * ADRC ESO bandwidth for roll
@@ -394,9 +394,6 @@ PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 1000);
  * @group Multicopter ADRC Control
  */
 PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 80);
-
-
-
 
 
 /**
@@ -461,7 +458,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_DMAX, 0.1);
  * @decimal 5
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.002);
+PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.001);
 
 
 /**
@@ -482,7 +479,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_UMAX, 0.5);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 1000);
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 500);
 
 /**
  * ADRC ESO bandwidth for pitch

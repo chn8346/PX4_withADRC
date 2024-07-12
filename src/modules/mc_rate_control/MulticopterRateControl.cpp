@@ -96,6 +96,8 @@ MulticopterRateControl::parameters_updated()
 	_acro_rate_max = Vector3f(radians(_param_mc_acro_r_max.get()), radians(_param_mc_acro_p_max.get()),
 				  radians(_param_mc_acro_y_max.get()));
 
+	_mc_rate_method = _param_mc_rate_method.get();
+
 	_rate_ladrc.ratex.td.set_td_ratio_frequency(_param_adrc_roll_td_xi.get(), _param_adrc_roll_td_freq.get());
 	_rate_ladrc.ratex.ec.set_error_combiner_coef(_param_adrc_roll_err_gain1.get(), _param_adrc_roll_err_gain2.get());
 	_rate_ladrc.ratex.eso.set_disturb_limit(-_param_adrc_roll_disturb_max.get(), _param_adrc_roll_disturb_max.get());
@@ -116,7 +118,6 @@ MulticopterRateControl::parameters_updated()
 	_rate_ladrc.ratez.ec.set_distrub_gain(_param_adrc_yaw_disturb_gain.get());
 	_rate_ladrc.ratez.ec.set_output_limit(-_param_adrc_yaw_output_max.get(), _param_adrc_yaw_output_max.get());
 	_rate_ladrc.ratez.eso.set_eso_gain_cutoff_frequency(_param_adrc_yaw_eso_gain.get(), _param_adrc_yaw_eso_bw.get());
-
 }
 
 void
@@ -240,24 +241,28 @@ MulticopterRateControl::Run()
 			if (_mc_rate_method == RATE_METHOD_LADRC) {
 				att_control = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
 			} else {
-				Vector3f att_control_adrc = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
+				// Vector3f att_control_adrc = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
 				att_control = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed);
 
 				ladrc_control_dis_s dis_val;
 				dis_val.timestamp = hrt_absolute_time();
 
-				dis_val.pid_control_x = att_control(0);
-				dis_val.adrc_condrol_x = att_control_adrc(0);
-				dis_val.dis_of_control_x = att_control(0) - att_control_adrc(0);
+				dis_val.pid_control_x = 0;
+				dis_val.adrc_condrol_x = 0;
+				dis_val.dis_of_control_x = 0;
 
-				dis_val.pid_control_y = att_control(1);
-				dis_val.adrc_condrol_y = att_control_adrc(1);
-				dis_val.dis_of_control_y = att_control(1) - att_control_adrc(1);
+				dis_val.pid_control_y = 0;
+				dis_val.adrc_condrol_y = 0;
+				dis_val.dis_of_control_y = 0;
 
-				dis_val.pid_control_z = att_control(2);
-				dis_val.adrc_condrol_z = att_control_adrc(2);
-				dis_val.dis_of_control_z = att_control(2) - att_control_adrc(2);
+				dis_val.pid_control_z = 0;
+				dis_val.adrc_condrol_z = 0;
+				dis_val.dis_of_control_z = 0;
 				_dis_ladrc_control_pub.publish(dis_val);
+
+				// printf("control dis: %f %f %f\n", (double)(att_control(2) - att_control_adrc(0)),
+				// 				  (double)(att_control_adrc(1)),
+				// 				  (double)(att_control_adrc(2)));
 			}
 
 			// pub ADRC controller status

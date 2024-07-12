@@ -126,7 +126,7 @@ private:
 	uORB::Publication<ladrc_status_s>		_ratey_ladrc_status_pub{ORB_ID(ladrc_status_ratey)};
 	uORB::Publication<ladrc_status_s>		_ratez_ladrc_status_pub{ORB_ID(ladrc_status_ratez)};
 
-	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_pub{ORB_ID(ladrc_control_dis)};
+	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_pub{ORB_ID(ladrc_dis)};
 
 	vehicle_control_mode_s	_vehicle_control_mode{};
 	vehicle_status_s	_vehicle_status{};
@@ -183,7 +183,6 @@ private:
 
 		// ADRC parameter
 		(ParamInt<px4::params::MC_RATE_METHOD>) _param_mc_rate_method,
-
 		(ParamFloat<px4::params::ADRC_R_TD_XI>) _param_adrc_roll_td_xi,
 		(ParamFloat<px4::params::ADRC_R_TD_FREQ>) _param_adrc_roll_td_freq,
 		(ParamFloat<px4::params::ADRC_R_ERR_K1>) _param_adrc_roll_err_gain1,

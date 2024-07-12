@@ -36,9 +36,8 @@
  */
 
 #include <RateLADRC.hpp>
-#include <time.h>
-#include <drivers/drv_hrt.h>
 #include <px4_platform_common/defines.h>
+#include <mathlib/math/Limits.hpp>
 
 using namespace matrix;
 

@@ -310,7 +310,7 @@ PARAM_DEFINE_INT32(MC_RATE_METHOD, 1);
  * @decimal 2
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_TD_XI, 1.0f);
+PARAM_DEFINE_FLOAT(ADRC_R_TD_XI, 0.1f);
 
 /**
  * ADRC TD frequency for roll
@@ -389,11 +389,11 @@ PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 500);
  *
  * @unit rad/s
  * @min 1
- * @max 200
+ * @max 400
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 80);
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 180);
 
 
 /**
@@ -404,7 +404,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 80);
  * @decimal 1
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_TD_XI, 1.0);
+PARAM_DEFINE_FLOAT(ADRC_P_TD_XI, 0.1);
 
 /**
  * ADRC TD frequency for pitch
@@ -486,11 +486,11 @@ PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 500);
  *
  * @unit rad/s
  * @min 1
- * @max 200
+ * @max 400
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 80);
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 180);
 
 
 
@@ -589,7 +589,7 @@ PARAM_DEFINE_FLOAT(ADRC_Y_ESO_GAIN, 3e3);
  *
  * @unit rad/s
  * @min 1
- * @max 100
+ * @max 200
  * @decimal 0
  * @group Multicopter ADRC Control
  */

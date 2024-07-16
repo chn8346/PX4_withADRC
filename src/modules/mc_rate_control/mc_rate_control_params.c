@@ -348,10 +348,10 @@ PARAM_DEFINE_FLOAT(ADRC_R_ERR_K2, 0.002);
  *
  * @min 0.00000
  * @max 100.00000
- * @decimal 5
+ * @decimal 6
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_DGAIN, 0.001);
+PARAM_DEFINE_FLOAT(ADRC_R_DGAIN, 0.00001);
 
 
 /**
@@ -393,7 +393,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 500);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 180);
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 100);
 
 
 /**
@@ -455,10 +455,10 @@ PARAM_DEFINE_FLOAT(ADRC_P_DMAX, 0.1);
  *
  * @min 0.0
  * @max 100.0
- * @decimal 5
+ * @decimal 6
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.001);
+PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.00001);
 
 
 /**
@@ -490,7 +490,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 500);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 180);
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 100);
 
 
 
@@ -556,10 +556,10 @@ PARAM_DEFINE_FLOAT(ADRC_Y_DMAX, 0.2);
  *
  * @min 0.0
  * @max 1.0
- * @decimal 5
+ * @decimal 6
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_Y_DGAIN, 0.05);
+PARAM_DEFINE_FLOAT(ADRC_Y_DGAIN, 0.001);
 
 
 
@@ -593,7 +593,7 @@ PARAM_DEFINE_FLOAT(ADRC_Y_ESO_GAIN, 3e3);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_Y_ESO_BW, 20);
+PARAM_DEFINE_FLOAT(ADRC_Y_ESO_BW, 40);
 
 
 

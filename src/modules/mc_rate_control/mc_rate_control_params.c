@@ -310,7 +310,7 @@ PARAM_DEFINE_INT32(MC_RATE_METHOD, 1);
  * @decimal 2
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_TD_XI, 0.1f);
+PARAM_DEFINE_FLOAT(ADRC_R_TD_XI, 1.0f);
 
 /**
  * ADRC TD frequency for roll
@@ -320,7 +320,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_TD_XI, 0.1f);
  * @decimal 1
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_TD_FREQ, 90.0);
+PARAM_DEFINE_FLOAT(ADRC_R_TD_FREQ, 60.0);
 
 /**
  * ADRC state1 feedback gain for roll
@@ -351,7 +351,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_ERR_K2, 0.002);
  * @decimal 6
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_DGAIN, 0.00001);
+PARAM_DEFINE_FLOAT(ADRC_R_DGAIN, 0.01);
 
 
 /**
@@ -382,7 +382,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_UMAX, 0.5);
  * @decimal 1
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 500);
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 10000);
 
 /**
  * ADRC ESO bandwidth for roll
@@ -393,7 +393,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_ESO_GAIN, 500);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 100);
+PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 80);
 
 
 /**
@@ -404,7 +404,7 @@ PARAM_DEFINE_FLOAT(ADRC_R_ESO_BW, 100);
  * @decimal 1
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_TD_XI, 0.1);
+PARAM_DEFINE_FLOAT(ADRC_P_TD_XI, 1.0);
 
 /**
  * ADRC TD frequency for pitch
@@ -414,7 +414,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_TD_XI, 0.1);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_TD_FREQ, 90.0);
+PARAM_DEFINE_FLOAT(ADRC_P_TD_FREQ, 60.0);
 
 /**
  * ADRC state1 feedback gain for pitch
@@ -458,7 +458,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_DMAX, 0.1);
  * @decimal 6
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.00001);
+PARAM_DEFINE_FLOAT(ADRC_P_DGAIN, 0.01);
 
 
 /**
@@ -479,7 +479,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_UMAX, 0.5);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 500);
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 10000);
 
 /**
  * ADRC ESO bandwidth for pitch
@@ -490,7 +490,7 @@ PARAM_DEFINE_FLOAT(ADRC_P_ESO_GAIN, 500);
  * @decimal 0
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 100);
+PARAM_DEFINE_FLOAT(ADRC_P_ESO_BW, 80);
 
 
 
@@ -559,7 +559,7 @@ PARAM_DEFINE_FLOAT(ADRC_Y_DMAX, 0.2);
  * @decimal 6
  * @group Multicopter ADRC Control
  */
-PARAM_DEFINE_FLOAT(ADRC_Y_DGAIN, 0.001);
+PARAM_DEFINE_FLOAT(ADRC_Y_DGAIN, 0.1);
 
 
 

@@ -45,6 +45,10 @@
 #include <uORB/topics/vehicle_attitude_setpoint.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
 
+// include the adrc height velocity controller,
+// we use adrc into ths file and update the ADRC controller output with all update process of the pos control
+#include <lib/HeightRateLADRC/HeightRateLADRC.hpp>
+
 struct PositionControlStates {
 	matrix::Vector3f position;
 	matrix::Vector3f velocity;
@@ -158,6 +162,17 @@ public:
 	bool update(const float dt);
 
 	/**
+	 * Apply P-position and LADRC-velocity controller that updates the member
+	 * thrust, yaw- and yawspeed-setpoints.
+	 * @see _thr_sp
+	 * @see _yaw_sp
+	 * @see _yawspeed_sp
+	 * @param dt time in seconds since last iteration
+	 * @return true if update succeeded and output setpoint is executable, false if not
+	 */
+	bool update(const float dt, HeightRateLADRC& adrc_controller, bool land_status);
+
+	/**
 	 * Set the integral term in xy to 0.
 	 * @see _vel_int
 	 */
@@ -198,6 +213,7 @@ private:
 
 	void _positionControl(); ///< Position proportional control
 	void _velocityControl(const float dt); ///< Velocity PID control
+	void _velocityControl(const float dt, HeightRateLADRC& adrc_control, bool land_status); ///< Velocity ADRC control
 	void _accelerationControl(); ///< Acceleration setpoint processing
 
 	// Gains

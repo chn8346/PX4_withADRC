@@ -38,7 +38,7 @@
  * @value 1 LADRC
  * @group Multicopter Position Control
  */
-PARAM_DEFINE_INT32(MC_H_CTRL_METHOD, 1);
+PARAM_DEFINE_INT32(MC_H_CTRL_METHOD, 0);
 
 /**
  * ADRC TD damping ratio for Height Control

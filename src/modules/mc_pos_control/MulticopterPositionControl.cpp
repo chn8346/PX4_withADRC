@@ -570,14 +570,37 @@ void MulticopterPositionControl::Run()
 
 			_control.setState(states);
 
-			// Run position control
-			if (!_control.update(dt)) {
-				// Failsafe
-				_vehicle_constraints = {0, NAN, NAN, false, {}}; // reset constraints
+			// Run position control start at here
+			// _param_mpc_h_ctrl_method have 2 kinds of vals: 0 means PID control, 1 means ADRC controller
+			if(_mpc_pos_control_method == HEIGHT_CONTROL_METHOD_LADRC){
+				// ADRC
 
-				_control.setInputSetpoint(generateFailsafeSetpoint(vehicle_local_position.timestamp_sample, states, true));
-				_control.setVelocityLimits(_param_mpc_xy_vel_max.get(), _param_mpc_z_vel_max_up.get(), _param_mpc_z_vel_max_dn.get());
-				_control.update(dt);
+				// if the first update fail, then a next update will call
+				if (!_control.update(dt, _adrc_control, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed)) {
+					// Failsafe
+					_vehicle_constraints = {0, NAN, NAN, false, {}}; // reset constraints
+
+					_control.setInputSetpoint(generateFailsafeSetpoint(vehicle_local_position.timestamp_sample, states, true));
+					_control.setVelocityLimits(_param_mpc_xy_vel_max.get(), _param_mpc_z_vel_max_up.get(), _param_mpc_z_vel_max_dn.get());
+
+					// update using a overloading func, a adrc control execute in it
+					_control.update(dt, _adrc_control, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed);
+				}
+
+				ladrc_status_s ladrc_status = {};
+				_adrc_control.record_rateloop_ladrc_status(ladrc_status);
+				// _height_adrc_status_pub.publish(ladrc_status);
+
+			}else{
+				// PID
+				if (!_control.update(dt)) {
+					// Failsafe
+					_vehicle_constraints = {0, NAN, NAN, false, {}}; // reset constraints
+
+					_control.setInputSetpoint(generateFailsafeSetpoint(vehicle_local_position.timestamp_sample, states, true));
+					_control.setVelocityLimits(_param_mpc_xy_vel_max.get(), _param_mpc_z_vel_max_up.get(), _param_mpc_z_vel_max_dn.get());
+					_control.update(dt);
+				}
 			}
 
 			// Publish internal position control setpoints

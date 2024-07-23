@@ -74,6 +74,13 @@
 
 using namespace time_literals;
 
+
+enum MPC_height_control_METHOD_m
+{
+	HEIGHT_CONTROL_METHOD_PID = 0,
+	HEIGHT_CONTROL_METHOD_LADRC = 1
+};
+
 class MulticopterPositionControl : public ModuleBase<MulticopterPositionControl>, public ModuleParams,
 	public px4::ScheduledWorkItem
 {

@@ -121,6 +121,27 @@ bool PositionControl::update(const float dt)
 	return valid && _acc_sp.isAllFinite() && _thr_sp.isAllFinite();
 }
 
+// update OverLoading, a ADRC controller toke into the update
+bool PositionControl::update(const float dt, HeightRateLADRC& adrc_controller, bool land_status)
+{
+	bool valid = _inputValid();
+
+	if (valid) {
+		_positionControl();
+
+		//_velocityControl(dt);
+
+		// ADRC at here
+		_velocityControl(dt, adrc_controller, land_status);
+
+		_yawspeed_sp = PX4_ISFINITE(_yawspeed_sp) ? _yawspeed_sp : 0.f;
+		_yaw_sp = PX4_ISFINITE(_yaw_sp) ? _yaw_sp : _yaw; // TODO: better way to disable yaw control
+	}
+
+	// There has to be a valid output acceleration and thrust setpoint otherwise something went wrong
+	return valid && _acc_sp.isAllFinite() && _thr_sp.isAllFinite();
+}
+
 void PositionControl::_positionControl()
 {
 	// P-position controller
@@ -145,6 +166,73 @@ void PositionControl::_velocityControl(const float dt)
 	// PID velocity control
 	Vector3f vel_error = _vel_sp - _vel;
 	Vector3f acc_sp_velocity = vel_error.emult(_gain_vel_p) + _vel_int - _vel_dot.emult(_gain_vel_d);
+
+	// No control input from setpoints or corresponding states which are NAN
+	ControlMath::addIfNotNanVector3f(_acc_sp, acc_sp_velocity);
+
+	_accelerationControl();
+
+	// Integrator anti-windup in vertical direction
+	if ((_thr_sp(2) >= -_lim_thr_min && vel_error(2) >= 0.f) ||
+	    (_thr_sp(2) <= -_lim_thr_max && vel_error(2) <= 0.f)) {
+		vel_error(2) = 0.f;
+	}
+
+	// Prioritize vertical control while keeping a horizontal margin
+	const Vector2f thrust_sp_xy(_thr_sp);
+	const float thrust_sp_xy_norm = thrust_sp_xy.norm();
+	const float thrust_max_squared = math::sq(_lim_thr_max);
+
+	// Determine how much vertical thrust is left keeping horizontal margin
+	const float allocated_horizontal_thrust = math::min(thrust_sp_xy_norm, _lim_thr_xy_margin);
+	const float thrust_z_max_squared = thrust_max_squared - math::sq(allocated_horizontal_thrust);
+
+	// Saturate maximal vertical thrust
+	_thr_sp(2) = math::max(_thr_sp(2), -sqrtf(thrust_z_max_squared));
+
+	// Determine how much horizontal thrust is left after prioritizing vertical control
+	const float thrust_max_xy_squared = thrust_max_squared - math::sq(_thr_sp(2));
+	float thrust_max_xy = 0.f;
+
+	if (thrust_max_xy_squared > 0.f) {
+		thrust_max_xy = sqrtf(thrust_max_xy_squared);
+	}
+
+	// Saturate thrust in horizontal direction
+	if (thrust_sp_xy_norm > thrust_max_xy) {
+		_thr_sp.xy() = thrust_sp_xy / thrust_sp_xy_norm * thrust_max_xy;
+	}
+
+	// Use tracking Anti-Windup for horizontal direction: during saturation, the integrator is used to unsaturate the output
+	// see Anti-Reset Windup for PID controllers, L.Rundqwist, 1990
+	const Vector2f acc_sp_xy_produced = Vector2f(_thr_sp) * (CONSTANTS_ONE_G / _hover_thrust);
+	const float arw_gain = 2.f / _gain_vel_p(0);
+
+	// The produced acceleration can be greater or smaller than the desired acceleration due to the saturations and the actual vertical thrust (computed independently).
+	// The ARW loop needs to run if the signal is saturated only.
+	const Vector2f acc_sp_xy = _acc_sp.xy();
+	const Vector2f acc_limited_xy = (acc_sp_xy.norm_squared() > acc_sp_xy_produced.norm_squared())
+					? acc_sp_xy_produced
+					: acc_sp_xy;
+	vel_error.xy() = Vector2f(vel_error) - arw_gain * (acc_sp_xy - acc_limited_xy);
+
+	// Make sure integral doesn't get NAN
+	ControlMath::setZeroIfNanVector3f(vel_error);
+	// Update integral part of velocity control
+	_vel_int += vel_error.emult(_gain_vel_i) * dt;
+}
+
+void PositionControl::_velocityControl(const float dt, HeightRateLADRC& adrc_control, bool land_status){
+	// Constrain vertical velocity integral
+	_vel_int(2) = math::constrain(_vel_int(2), -CONSTANTS_ONE_G, CONSTANTS_ONE_G);
+
+
+	// using PID XY-Axis velocity control
+	Vector3f vel_error = _vel_sp - _vel;
+	Vector3f acc_sp_velocity = vel_error.emult(_gain_vel_p) + _vel_int - _vel_dot.emult(_gain_vel_d);
+
+	// using ADRC Z-Axis velocity control
+	acc_sp_velocity(2) = adrc_control.update(_vel(2), _vel_sp(2), dt, land_status);
 
 	// No control input from setpoints or corresponding states which are NAN
 	ControlMath::addIfNotNanVector3f(_acc_sp, acc_sp_velocity);

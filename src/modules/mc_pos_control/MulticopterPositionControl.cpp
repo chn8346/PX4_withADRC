@@ -304,6 +304,18 @@ void MulticopterPositionControl::parameters_update(bool force)
 		_takeoff.setSpoolupTime(_param_com_spoolup_time.get());
 		_takeoff.setTakeoffRampTime(_param_mpc_tko_ramp_t.get());
 		_takeoff.generateInitialRampValue(_param_mpc_z_vel_p_acc.get());
+
+		// control method update
+		_mpc_pos_control_method = _param_mpc_h_ctrl_method.get();
+
+		// adrc cintroller parameter update
+		_adrc_control.height_rate_controller.td.set_td_ratio_frequency(_param_mpc_adrc_h_td_xi.get(), _param_mpc_adrc_h_td_freq.get());
+		_adrc_control.height_rate_controller.ec.set_error_combiner_coef(_param_mpc_adrc_h_err_k1.get(), _param_mpc_adrc_h_err_k2.get());
+		_adrc_control.height_rate_controller.eso.set_disturb_limit(-_param_mpc_adrc_h_disturb_max.get(), _param_mpc_adrc_h_disturb_max.get());
+		_adrc_control.height_rate_controller.ec.set_distrub_gain(_param_mpc_adrc_h_disturb_gain.get());
+		_adrc_control.height_rate_controller.ec.set_output_limit(-_param_mpc_adrc_h_u_max.get(), _param_mpc_adrc_h_u_max.get());
+		_adrc_control.height_rate_controller.eso.set_eso_gain_cutoff_frequency(_param_mpc_adrc_h_eso_gain.get(), _param_mpc_adrc_h_eso_bw.get());
+
 	}
 }
 

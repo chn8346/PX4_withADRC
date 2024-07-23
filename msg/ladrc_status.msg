@@ -15,5 +15,5 @@ float32 z2
 float32 z3
 float32 disturb
 
-# TOPICS ladrc_status_ratex ladrc_status_ratey ladrc_status_ratez
+# TOPICS ladrc_status_ratex ladrc_status_ratey ladrc_status_ratez ladrc_status_height_v
 

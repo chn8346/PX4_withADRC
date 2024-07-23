@@ -68,6 +68,10 @@
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
 
+// self made msg
+#include <uORB/topics/ladrc_status.h>
+#include <lib/HeightRateLADRC/HeightRateLADRC.hpp>
+
 using namespace time_literals;
 
 class MulticopterPositionControl : public ModuleBase<MulticopterPositionControl>, public ModuleParams,
@@ -98,6 +102,9 @@ private:
 	uORB::PublicationData<takeoff_status_s>              _takeoff_status_pub{ORB_ID(takeoff_status)};
 	uORB::Publication<vehicle_attitude_setpoint_s>	     _vehicle_attitude_setpoint_pub{ORB_ID(vehicle_attitude_setpoint)};
 	uORB::Publication<vehicle_local_position_setpoint_s> _local_pos_sp_pub{ORB_ID(vehicle_local_position_setpoint)};	/**< vehicle local position setpoint publication */
+
+	// a publisher to send height ladrc controller info
+	uORB::Publication<ladrc_status_s>                    _height_adrc_status_pub{ORB_ID(ladrc_status_height_v)};
 
 	uORB::SubscriptionCallbackWorkItem _local_pos_sub{this, ORB_ID(vehicle_local_position)};	/**< vehicle local position */
 
@@ -189,7 +196,19 @@ private:
 
 		(ParamFloat<px4::params::MPC_XY_ERR_MAX>) _param_mpc_xy_err_max,
 		(ParamFloat<px4::params::MPC_YAWRAUTO_MAX>) _param_mpc_yawrauto_max,
-		(ParamFloat<px4::params::MPC_YAWRAUTO_ACC>) _param_mpc_yawrauto_acc
+		(ParamFloat<px4::params::MPC_YAWRAUTO_ACC>) _param_mpc_yawrauto_acc,
+
+		// LADRC height parameters
+		(ParamInt<px4::params::MC_H_CTRL_METHOD>)   _param_mpc_h_ctrl_method,	// control method choose
+		(ParamFloat<px4::params::ADRC_H_TD_XI>)     _param_mpc_adrc_h_td_xi,
+		(ParamFloat<px4::params::ADRC_H_TD_FREQ>)   _param_mpc_adrc_h_td_freq,
+		(ParamFloat<px4::params::ADRC_H_ERR_K1>)    _param_mpc_adrc_h_err_k1,
+		(ParamFloat<px4::params::ADRC_H_ERR_K2>)    _param_mpc_adrc_h_err_k2,
+		(ParamFloat<px4::params::ADRC_H_DGAIN>)     _param_mpc_adrc_h_disturb_gain,
+		(ParamFloat<px4::params::ADRC_H_DMAX>) 	    _param_mpc_adrc_h_disturb_max,
+		(ParamFloat<px4::params::ADRC_H_UMAX>) 	    _param_mpc_adrc_h_u_max,
+		(ParamFloat<px4::params::ADRC_H_ESO_GAIN>)  _param_mpc_adrc_h_eso_gain,
+		(ParamFloat<px4::params::ADRC_H_ESO_BW>)    _param_mpc_adrc_h_eso_bw
 	);
 
 	math::WelfordMean<float> _sample_interval_s{};
@@ -205,6 +224,10 @@ private:
 
 	GotoControl _goto_control; ///< class for handling smooth goto position setpoints
 	PositionControl _control; ///< class for core PID position control
+
+	// new & custom controller def
+	HeightRateLADRC _adrc_control;	// controller with ladrc
+	uint8_t _mpc_pos_control_method{0}; // control method , 0 is pid, 1 is adrc
 
 	hrt_abstime _last_warn{0}; /**< timer when the last warn message was sent out */
 

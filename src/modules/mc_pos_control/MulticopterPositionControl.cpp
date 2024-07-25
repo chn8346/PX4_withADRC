@@ -33,6 +33,8 @@
 
 #include "MulticopterPositionControl.hpp"
 
+#include <iostream>
+
 #include <float.h>
 #include <lib/mathlib/mathlib.h>
 #include <lib/matrix/matrix/math.hpp>
@@ -577,6 +579,8 @@ void MulticopterPositionControl::Run()
 
 				// if the first update fail, then a next update will call
 				if (!_control.update(dt, _adrc_control, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed)) {
+					std::cout << "pos control fail, retry" << std::endl;
+
 					// Failsafe
 					_vehicle_constraints = {0, NAN, NAN, false, {}}; // reset constraints
 
@@ -589,7 +593,7 @@ void MulticopterPositionControl::Run()
 
 				ladrc_status_s ladrc_status = {};
 				_adrc_control.record_rateloop_ladrc_status(ladrc_status);
-				// _height_adrc_status_pub.publish(ladrc_status);
+				_height_adrc_status_pub.publish(ladrc_status);
 
 			}else{
 				// PID

@@ -232,7 +232,7 @@ void PositionControl::_velocityControl(const float dt, HeightRateLADRC& adrc_con
 	Vector3f acc_sp_velocity = vel_error.emult(_gain_vel_p) + _vel_int - _vel_dot.emult(_gain_vel_d);
 
 	// using ADRC Z-Axis velocity control
-	acc_sp_velocity(2) = adrc_control.update(_vel(2), _vel_sp(2), dt, land_status);
+	acc_sp_velocity(2) = adrc_control.update(_vel(2), _vel_sp(2), dt, land_status) * (double)(50.0f);
 
 	// No control input from setpoints or corresponding states which are NAN
 	ControlMath::addIfNotNanVector3f(_acc_sp, acc_sp_velocity);

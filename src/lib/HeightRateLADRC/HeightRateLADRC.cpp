@@ -82,6 +82,5 @@ void HeightRateLADRC::record_adrc_status(ladrc_status_s &height_ladrc_status, ns
 void HeightRateLADRC::record_rateloop_ladrc_status(ladrc_status_s &height_ladrc_status)
 {
 	record_adrc_status(height_ladrc_status, height_rate_controller);
-
 }
 

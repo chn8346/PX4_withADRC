@@ -60,6 +60,7 @@
 #include "streams/ADRC_STATUS_X.hpp"
 #include "streams/ADRC_STATUS_Y.hpp"
 #include "streams/ADRC_STATUS_Z.hpp"
+#include "streams/ADRC_STATUS_HEIGHY.hpp"
 
 #include "streams/ACTUATOR_OUTPUT_STATUS.hpp"
 #include "streams/ALTITUDE.hpp"
@@ -253,6 +254,9 @@ static_assert(MAV_SENSOR_ROTATION_CUSTOM == static_cast<MAV_SENSOR_ORIENTATION>(
 
 
 static const StreamListItem streams_list[] = {
+#if defined(ADRC_STATUS_HEIGHT_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcStatusHeight>(),
+#endif
 #if defined(ADRC_STATUS_X_STREAM_HPP)
     	create_stream_list_item<MavlinkStreamAdrcStatusX>(),
 #endif

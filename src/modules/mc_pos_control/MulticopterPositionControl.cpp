@@ -33,6 +33,8 @@
 
 #include "MulticopterPositionControl.hpp"
 
+#include <iostream>
+
 #include <float.h>
 #include <lib/mathlib/mathlib.h>
 #include <lib/matrix/matrix/math.hpp>
@@ -602,6 +604,7 @@ void MulticopterPositionControl::Run()
 				// publish ADRC control status
 				ladrc_status_s ladrc_status = {};
 				_adrc_control.record_rateloop_ladrc_status(ladrc_status);
+				_height_adrc_status_pub.publish(ladrc_status);
 				_height_adrc_status_pub.publish(ladrc_status);
 
 			}else{

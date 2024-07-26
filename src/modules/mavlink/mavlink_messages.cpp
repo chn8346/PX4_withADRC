@@ -258,6 +258,9 @@ static_assert(MAV_SENSOR_ROTATION_CUSTOM == static_cast<MAV_SENSOR_ORIENTATION>(
 
 
 static const StreamListItem streams_list[] = {
+#if defined(ADRC_STATUS_HEIGHT_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcStatusHeight>(),
+#endif
 #if defined(ADRC_STATUS_X_STREAM_HPP)
     	create_stream_list_item<MavlinkStreamAdrcStatusX>(),
 #endif

@@ -241,28 +241,26 @@ MulticopterRateControl::Run()
 			if (_mc_rate_method == RATE_METHOD_LADRC) {
 				att_control = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
 			} else {
-				// Vector3f att_control_adrc = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
+				Vector3f att_control_adrc = _rate_ladrc.update(rates, _rates_setpoint, dt, _maybe_landed || _landed);
 				att_control = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed);
 
 				ladrc_control_dis_s dis_val;
 				dis_val.timestamp = hrt_absolute_time();
 
-				dis_val.pid_control_x = 0;
-				dis_val.adrc_condrol_x = 0;
-				dis_val.dis_of_control_x = 0;
+				dis_val.pid_val = att_control(0);
+				dis_val.adrc_val = att_control_adrc(0);
+				dis_val.dis_of_val = att_control(0) - att_control_adrc(0);
+				_dis_ladrc_control_x_pub.publish(dis_val);
 
-				dis_val.pid_control_y = 0;
-				dis_val.adrc_condrol_y = 0;
-				dis_val.dis_of_control_y = 0;
+				dis_val.pid_val = att_control(1);
+				dis_val.adrc_val = att_control_adrc(1);
+				dis_val.dis_of_val = att_control(1) - att_control_adrc(1);
+				_dis_ladrc_control_y_pub.publish(dis_val);
 
-				dis_val.pid_control_z = 0;
-				dis_val.adrc_condrol_z = 0;
-				dis_val.dis_of_control_z = 0;
-				_dis_ladrc_control_pub.publish(dis_val);
-
-				// printf("control dis: %f %f %f\n", (double)(att_control(2) - att_control_adrc(0)),
-				// 				  (double)(att_control_adrc(1)),
-				// 				  (double)(att_control_adrc(2)));
+				dis_val.pid_val = att_control(2);
+				dis_val.adrc_val = att_control_adrc(2);
+				dis_val.dis_of_val = att_control(2) - att_control_adrc(2);
+				_dis_ladrc_control_z_pub.publish(dis_val);
 			}
 
 			// pub ADRC controller status

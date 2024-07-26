@@ -67,6 +67,7 @@
 #include <uORB/topics/vehicle_land_detected.h>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/ladrc_control_dis.h>
 
 // self made msg
 #include <uORB/topics/ladrc_status.h>
@@ -112,6 +113,12 @@ private:
 
 	// a publisher to send height ladrc controller info
 	uORB::Publication<ladrc_status_s>                    _height_adrc_status_pub{ORB_ID(ladrc_status_height_v)};
+
+	// control compare publisher
+	uORB::Publication<ladrc_control_dis_s>		     _dis_ladrc_control_height_pub{ORB_ID(ladrc_h_dis)};
+	// uORB::Publication<ladrc_control_dis_s>	     _dis_ladrc_control_x_pub{ORB_ID( )};
+	// uORB::Publication<ladrc_control_dis_s>	     _dis_ladrc_control_y_pub{ORB_ID( )};
+	float _ADRC_AMP = 50.0;
 
 	uORB::SubscriptionCallbackWorkItem _local_pos_sub{this, ORB_ID(vehicle_local_position)};	/**< vehicle local position */
 
@@ -207,6 +214,7 @@ private:
 
 		// LADRC height parameters
 		(ParamInt<px4::params::MC_H_CTRL_METHOD>)   _param_mpc_h_ctrl_method,	// control method choose
+		(ParamFloat<px4::params::ADRC_H_AMP>)       _param_mpc_adrc_h_amp,  // control output amp
 		(ParamFloat<px4::params::ADRC_H_TD_XI>)     _param_mpc_adrc_h_td_xi,
 		(ParamFloat<px4::params::ADRC_H_TD_FREQ>)   _param_mpc_adrc_h_td_freq,
 		(ParamFloat<px4::params::ADRC_H_ERR_K1>)    _param_mpc_adrc_h_err_k1,

@@ -45,6 +45,22 @@
 #include <uORB/topics/vehicle_attitude_setpoint.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
 
+struct control_compare_s
+{
+	float x_pid;
+	float x_adrc;
+	float x_dis;
+
+	float y_pid;
+	float y_adrc;
+	float y_dis;
+
+	float z_pid;
+	float z_adrc;
+	float z_dis;
+};
+
+
 // include the adrc height velocity controller,
 // we use adrc into ths file and update the ADRC controller output with all update process of the pos control
 #include <lib/HeightRateLADRC/HeightRateLADRC.hpp>
@@ -170,7 +186,7 @@ public:
 	 * @param dt time in seconds since last iteration
 	 * @return true if update succeeded and output setpoint is executable, false if not
 	 */
-	bool update(const float dt, HeightRateLADRC& adrc_controller, bool land_status);
+	bool update(const float dt, HeightRateLADRC& adrc_controller, float amp, bool land_status);
 
 	/**
 	 * Set the integral term in xy to 0.
@@ -204,6 +220,12 @@ public:
 	 */
 	static const trajectory_setpoint_s empty_trajectory_setpoint;
 
+
+	/**
+	 * Get ADRC and PID control result in order to compare control method
+	 */
+	void get_control_out(control_compare_s& result);
+
 private:
 	// The range limits of the hover thrust configuration/estimate
 	static constexpr float HOVER_THRUST_MIN = 0.05f;
@@ -213,7 +235,7 @@ private:
 
 	void _positionControl(); ///< Position proportional control
 	void _velocityControl(const float dt); ///< Velocity PID control
-	void _velocityControl(const float dt, HeightRateLADRC& adrc_control, bool land_status); ///< Velocity ADRC control
+	void _velocityControl(const float dt, HeightRateLADRC& adrc_control, float amp, bool land_status); ///< Velocity ADRC control
 	void _accelerationControl(); ///< Acceleration setpoint processing
 
 	// Gains
@@ -248,4 +270,8 @@ private:
 	matrix::Vector3f _thr_sp; /**< desired thrust */
 	float _yaw_sp{}; /**< desired heading */
 	float _yawspeed_sp{}; /** desired yaw-speed */
+
+	// control_compare_var
+	matrix::Vector3f _compare_acc_sp_pid;
+	matrix::Vector3f _compare_acc_sp_adrc;
 };

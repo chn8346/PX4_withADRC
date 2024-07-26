@@ -1400,9 +1400,16 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("ADSB_VEHICLE", unlimited_rate);
 		configure_stream_local("ALTITUDE", 1.0f);
 		configure_stream_local("ATTITUDE", 15.0f);
+
 		configure_stream_local("ADRC_STATUS_X", 20.0f);
 		configure_stream_local("ADRC_STATUS_Y", 20.0f);
 		configure_stream_local("ADRC_STATUS_Z", 20.0f);
+		configure_stream_local("ADRC_STATUS_HEIGHT", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AX_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AY_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AZ_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_H_DIS", 20.0f);
+
 		configure_stream_local("ATTITUDE_QUATERNION", 10.0f);
 		configure_stream_local("ATTITUDE_TARGET", 2.0f);
 		configure_stream_local("AVAILABLE_MODES", 0.3f);
@@ -1480,6 +1487,12 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("ADRC_STATUS_X", 20.0f);
 		configure_stream_local("ADRC_STATUS_Y", 20.0f);
 		configure_stream_local("ADRC_STATUS_Z", 20.0f);
+		configure_stream_local("ADRC_STATUS_HEIGHT", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AX_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AY_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AZ_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_H_DIS", 20.0f);
+
 
 		configure_stream_local("ADSB_VEHICLE", unlimited_rate);
 		configure_stream_local("ATTITUDE_QUATERNION", 50.0f);
@@ -1728,6 +1741,12 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("ADRC_STATUS_X", 20.0f);
 		configure_stream_local("ADRC_STATUS_Y", 20.0f);
 		configure_stream_local("ADRC_STATUS_Z", 20.0f);
+		configure_stream_local("ADRC_STATUS_HEIGHT", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AX_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AY_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_AZ_DIS", 20.0f);
+		configure_stream_local("ADRC_DEBUG_H_DIS", 20.0f);
+
 
 #if !defined(CONSTRAINED_FLASH)
 		configure_stream_local("LINK_NODE_STATUS", 1.0f);

@@ -60,6 +60,11 @@
 #include "streams/ADRC_STATUS_X.hpp"
 #include "streams/ADRC_STATUS_Y.hpp"
 #include "streams/ADRC_STATUS_Z.hpp"
+#include "streams/ADRC_STATUS_HEIGHT.hpp"
+#include "streams/ADRC_DEBUG_X.hpp"
+#include "streams/ADRC_DEBUG_Y.hpp"
+#include "streams/ADRC_DEBUG_Z.hpp"
+#include "streams/ADRC_DEBUG_H.hpp"
 
 #include "streams/ACTUATOR_OUTPUT_STATUS.hpp"
 #include "streams/ALTITUDE.hpp"
@@ -261,6 +266,21 @@ static const StreamListItem streams_list[] = {
 #endif
 #if defined(ADRC_STATUS_Z_STREAM_HPP)
     	create_stream_list_item<MavlinkStreamAdrcStatusZ>(),
+#endif
+#if defined(ADRC_STATUS_HEIGHT_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcStatusHeight>(),
+#endif
+#if defined(ADRC_DEBUG_X_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcDebugAX>(),
+#endif
+#if defined(ADRC_DEBUG_Y_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcDebugAY>(),
+#endif
+#if defined(ADRC_DEBUG_Z_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcDebugAZ>(),
+#endif
+#if defined(ADRC_DEBUG_H_STREAM_HPP)
+    	create_stream_list_item<MavlinkStreamAdrcDebugH>(),
 #endif
 #if defined(HEARTBEAT_HPP)
 	create_stream_list_item<MavlinkStreamHeartbeat>(),

@@ -316,6 +316,7 @@ void MulticopterPositionControl::parameters_update(bool force)
 		_adrc_control.height_rate_controller.ec.set_output_limit(-_param_mpc_adrc_h_u_max.get(), _param_mpc_adrc_h_u_max.get());
 		_adrc_control.height_rate_controller.eso.set_eso_gain_cutoff_frequency(_param_mpc_adrc_h_eso_gain.get(), _param_mpc_adrc_h_eso_bw.get());
 
+		_ADRC_AMP = _param_mpc_adrc_h_amp.get();
 	}
 }
 
@@ -576,7 +577,7 @@ void MulticopterPositionControl::Run()
 				// ADRC
 
 				// if the first update fail, then a next update will call
-				if (!_control.update(dt, _adrc_control, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed)) {
+				if (!_control.update(dt, _adrc_control, _ADRC_AMP, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed)) {
 					// Failsafe
 					_vehicle_constraints = {0, NAN, NAN, false, {}}; // reset constraints
 
@@ -584,12 +585,24 @@ void MulticopterPositionControl::Run()
 					_control.setVelocityLimits(_param_mpc_xy_vel_max.get(), _param_mpc_z_vel_max_up.get(), _param_mpc_z_vel_max_dn.get());
 
 					// update using a overloading func, a adrc control execute in it
-					_control.update(dt, _adrc_control, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed);
+					_control.update(dt, _adrc_control, _ADRC_AMP, _vehicle_land_detected.maybe_landed | _vehicle_land_detected.landed);
 				}
 
+				// publish control compare of ADRC and PID
+				control_compare_s control_compare_v;
+				_control.get_control_out(control_compare_v);
+				ladrc_control_dis_s control_dis = {
+					.timestamp = hrt_absolute_time(),
+					.pid_val = control_compare_v.z_pid,
+					.adrc_val = control_compare_v.z_adrc,
+					.dis_of_val = control_compare_v.z_dis
+				};
+				_dis_ladrc_control_height_pub.publish(control_dis);
+
+				// publish ADRC control status
 				ladrc_status_s ladrc_status = {};
 				_adrc_control.record_rateloop_ladrc_status(ladrc_status);
-				// _height_adrc_status_pub.publish(ladrc_status);
+				_height_adrc_status_pub.publish(ladrc_status);
 
 			}else{
 				// PID
@@ -600,6 +613,9 @@ void MulticopterPositionControl::Run()
 					_control.setInputSetpoint(generateFailsafeSetpoint(vehicle_local_position.timestamp_sample, states, true));
 					_control.setVelocityLimits(_param_mpc_xy_vel_max.get(), _param_mpc_z_vel_max_up.get(), _param_mpc_z_vel_max_dn.get());
 					_control.update(dt);
+
+					// ADRC control compare publish
+
 				}
 			}
 

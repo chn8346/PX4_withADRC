@@ -1,17 +1,7 @@
 uint64 timestamp
 
-float32 pid_control_x
-float32 adrc_condrol_x
-float32 dis_of_control_x
+float32 pid_val
+float32 adrc_val
+float32 dis_of_val
 
-
-float32 pid_control_y
-float32 adrc_condrol_y
-float32 dis_of_control_y
-
-
-float32 pid_control_z
-float32 adrc_condrol_z
-float32 dis_of_control_z
-
-# TOPICS ladrc_dis
+# TOPICS ladrc_anglex_dis ladrc_angley_dis ladrc_anglez_dis ladrc_h_dis

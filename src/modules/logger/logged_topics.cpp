@@ -45,7 +45,11 @@ using namespace px4::logger;
 
 void LoggedTopics::add_default_topics()
 {
-	// add_topic("ladrc_dis", 500);
+	add_topic("ladrc_anglex_dis", 20);
+	add_topic("ladrc_angley_dis", 20);
+	add_topic("ladrc_anglez_dis", 20);
+	add_topic("ladrc_h_dis", 20);
+
 	add_topic("ladrc_status_ratex", 20);
 	add_topic("ladrc_status_ratey", 20);
 	add_topic("ladrc_status_ratez", 20);

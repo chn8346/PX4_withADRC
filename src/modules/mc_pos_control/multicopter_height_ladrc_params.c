@@ -41,6 +41,15 @@
 PARAM_DEFINE_INT32(MC_H_CTRL_METHOD, 0);
 
 /**
+ * ADRC Control amplify
+ * @min 1.0
+ * @max 1000.0
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_H_AMP, 50.0);
+
+/**
  * ADRC TD damping ratio for Height Control
  * @min 0.1
  * @max 10.0

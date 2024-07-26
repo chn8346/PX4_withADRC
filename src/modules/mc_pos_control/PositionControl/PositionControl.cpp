@@ -122,7 +122,7 @@ bool PositionControl::update(const float dt)
 }
 
 // update OverLoading, a ADRC controller toke into the update
-bool PositionControl::update(const float dt, HeightRateLADRC& adrc_controller, bool land_status)
+bool PositionControl::update(const float dt, HeightRateLADRC& adrc_controller, float amp,  bool land_status)
 {
 	bool valid = _inputValid();
 
@@ -132,7 +132,7 @@ bool PositionControl::update(const float dt, HeightRateLADRC& adrc_controller, b
 		//_velocityControl(dt);
 
 		// ADRC at here
-		_velocityControl(dt, adrc_controller, land_status);
+		_velocityControl(dt, adrc_controller, amp, land_status);
 
 		_yawspeed_sp = PX4_ISFINITE(_yawspeed_sp) ? _yawspeed_sp : 0.f;
 		_yaw_sp = PX4_ISFINITE(_yaw_sp) ? _yaw_sp : _yaw; // TODO: better way to disable yaw control
@@ -222,7 +222,7 @@ void PositionControl::_velocityControl(const float dt)
 	_vel_int += vel_error.emult(_gain_vel_i) * dt;
 }
 
-void PositionControl::_velocityControl(const float dt, HeightRateLADRC& adrc_control, bool land_status){
+void PositionControl::_velocityControl(const float dt, HeightRateLADRC& adrc_control, float amp, bool land_status){
 	// Constrain vertical velocity integral
 	_vel_int(2) = math::constrain(_vel_int(2), -CONSTANTS_ONE_G, CONSTANTS_ONE_G);
 
@@ -230,9 +230,11 @@ void PositionControl::_velocityControl(const float dt, HeightRateLADRC& adrc_con
 	// using PID XY-Axis velocity control
 	Vector3f vel_error = _vel_sp - _vel;
 	Vector3f acc_sp_velocity = vel_error.emult(_gain_vel_p) + _vel_int - _vel_dot.emult(_gain_vel_d);
+	_compare_acc_sp_pid = acc_sp_velocity;
 
 	// using ADRC Z-Axis velocity control
-	acc_sp_velocity(2) = adrc_control.update(_vel(2), _vel_sp(2), dt, land_status);
+	acc_sp_velocity(2) = adrc_control.update(_vel(2), _vel_sp(2), dt, land_status) * (double)amp;
+	_compare_acc_sp_adrc = acc_sp_velocity;
 
 	// No control input from setpoints or corresponding states which are NAN
 	ControlMath::addIfNotNanVector3f(_acc_sp, acc_sp_velocity);
@@ -355,4 +357,20 @@ void PositionControl::getAttitudeSetpoint(vehicle_attitude_setpoint_s &attitude_
 {
 	ControlMath::thrustToAttitude(_thr_sp, _yaw_sp, attitude_setpoint);
 	attitude_setpoint.yaw_sp_move_rate = _yawspeed_sp;
+}
+
+void PositionControl::get_control_out(control_compare_s& result){
+	// get control result
+
+	result.x_pid = _compare_acc_sp_pid(0);
+	result.x_adrc = _compare_acc_sp_adrc(0);
+	result.x_dis = _compare_acc_sp_pid(0) - _compare_acc_sp_adrc(0);
+
+	result.y_pid = _compare_acc_sp_pid(1);
+	result.y_adrc = _compare_acc_sp_adrc(1);
+	result.y_dis = _compare_acc_sp_pid(1) - _compare_acc_sp_adrc(1);
+
+	result.z_pid = _compare_acc_sp_pid(2);
+	result.z_adrc = _compare_acc_sp_adrc(2);
+	result.z_dis = _compare_acc_sp_pid(2) - _compare_acc_sp_adrc(2);
 }

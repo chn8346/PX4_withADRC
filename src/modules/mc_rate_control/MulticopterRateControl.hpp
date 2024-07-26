@@ -122,11 +122,14 @@ private:
 	uORB::Publication<vehicle_rates_setpoint_s>	_vehicle_rates_setpoint_pub{ORB_ID(vehicle_rates_setpoint)};
 	uORB::Publication<vehicle_torque_setpoint_s>	_vehicle_torque_setpoint_pub;
 	uORB::Publication<vehicle_thrust_setpoint_s>	_vehicle_thrust_setpoint_pub;
+
 	uORB::Publication<ladrc_status_s>		_ratex_ladrc_status_pub{ORB_ID(ladrc_status_ratex)};
 	uORB::Publication<ladrc_status_s>		_ratey_ladrc_status_pub{ORB_ID(ladrc_status_ratey)};
 	uORB::Publication<ladrc_status_s>		_ratez_ladrc_status_pub{ORB_ID(ladrc_status_ratez)};
 
-	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_pub{ORB_ID(ladrc_dis)};
+	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_x_pub{ORB_ID(ladrc_anglex_dis)};
+	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_y_pub{ORB_ID(ladrc_angley_dis)};
+	uORB::Publication<ladrc_control_dis_s>		_dis_ladrc_control_z_pub{ORB_ID(ladrc_anglez_dis)};
 
 	vehicle_control_mode_s	_vehicle_control_mode{};
 	vehicle_status_s	_vehicle_status{};
